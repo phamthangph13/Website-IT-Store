@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle"></title>
+    <link rel="stylesheet" href="Style/index.css">
+    <link rel="stylesheet" href="Style/profile.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Header giống index.html -->
+    <header class="header">
+        <div class="header-left">
+            <a href="index.html" class="logo">
+                <img src="https://storage.googleapis.com/a1aa/image/thfLFmcmbXzIU65kQE7Z8Cpvadwpw1fG2bcCSftQzfLBMFzPB.jpg" alt="Logo" class="logo" />
+            </a>
+            <button class="hamburger-menu" aria-label="Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <nav class="nav">
+                <a href="index.html">Trang Chủ</a>
+                <a href="ProductPage.html">Sản Phẩm</a>
+                <a href="Tutorial.html">Hướng Dẫn</a>
+                <a href="AboutUs.html">Về Chúng Tôi</a>
+            </nav>
+        </div> 
+        <div class="header-right"></div>
+    </header>
+
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="user-profile">
+                <div class="profile-image">
+                    <img src="https://via.placeholder.com/150" alt="User Profile">
+                    <div class="edit-overlay">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                </div>
+                <h3 id="sidebarProfileName"></h3>
+                <p>Premium Member</p>
+            </div>
+            
+            <nav class="dashboard-nav">
+                <a href="#overview" class="nav-link active" data-section="overview">
+                    <i class="fas fa-home"></i> Tổng quan
+                </a>
+                <a href="#orders" class="nav-link" data-section="orders">
+                    <i class="fas fa-shopping-cart"></i> Đơn hàng
+                </a>
+                <a href="#wishlist" class="nav-link" data-section="wishlist"><i class="fas fa-heart"></i> Yêu thích</a>
+                <a href="#settings" class="nav-link" data-section="settings"><i class="fas fa-cog"></i> Cài đặt</a>
+                <a href="#info" class="nav-link" data-section="info"><i class="fas fa-user"></i> Thông tin cá nhân</a>
+                <a href="#notifications" class="nav-link" data-section="notifications"><i class="fas fa-bell"></i> Thông báo</a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Overview Section -->
+            <section id="overview" class="dashboard-section active">
+                <div class="dashboard-header">
+                    <h2>Xin chào, <span id="welcomeProfileName"></span>!</h2>
+                    <div class="quick-stats">
+                        <div class="stat-card">
+                            <i class="fas fa-shopping-bag"></i>
+                            <div class="stat-info">
+                                <h4>Tổng đơn hàng</h4>
+                                <p>25</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-heart"></i>
+                            <div class="stat-info">
+                                <h4>Sản phẩm yêu thích</h4>
+                                <p>12</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <i class="fas fa-coins"></i>
+                            <div class="stat-info">
+                                <h4>Điểm tích lũy</h4>
+                                <p>1,500</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-content">
+                    <div class="recent-orders">
+                        <h3>Đơn hàng gần đây</h3>
+                        <div class="order-list">
+                            <!-- Order items -->
+                            <div class="order-item">
+                                <img src="https://via.placeholder.com/50" alt="Product">
+                                <div class="order-info">
+                                    <h4>ChatGPT Plus</h4>
+                                    <p>Đã mua ngày: 15/03/2024</p>
+                                </div>
+                                <span class="order-status success">Hoàn thành</span>
+                            </div>
+                            <!-- More order items... -->
+                        </div>
+                    </div>
+
+                    <div class="recommended-products">
+                        <div class="section-header">
+                            <h3>Gợi ý cho bạn</h3>
+                            <div class="product-nav">
+                                <button class="nav-btn active">AI Tools</button>
+                                <button class="nav-btn">Software</button>
+                                <button class="nav-btn">Courses</button>
+                            </div>
+                        </div>
+                        
+                        <div class="product-grid">
+                            <div class="product-card">
+                                <div class="product-badge">Hot</div>
+                                <div class="product-image">
+                                    <img src="https://via.placeholder.com/300" alt="Midjourney Pro">
+                                    <div class="product-overlay">
+                                        <button class="action-btn preview">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                        <button class="action-btn wishlist">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="product-content">
+                                    <div class="product-category">AI Tools</div>
+                                    <h4>Midjourney Pro</h4>
+                                    <div class="product-rating">
+                                        <div class="stars">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <span>4.8 (2.3k)</span>
+                                    </div>
+                                    <div class="product-price">
+                                        <span class="current">2,000,000 VNĐ</span>
+                                        <span class="original">2,500,000 VNĐ</span>
+                                        <span class="discount">-20%</span>
+                                    </div>
+                                    <button class="add-to-cart">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        Thêm vào giỏ
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- Thêm các product card tương tự -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="orders" class="dashboard-section">
+                <div class="dashboard-header">
+                    <h2>Đơn Hàng Của Tôi</h2>
+                </div>
+                <div class="orders-container">
+                    <div class="orders-filter">
+                        <select class="filter-select">
+                            <option value="all">Tất cả đơn hàng</option>
+                            <option value="pending">Chờ xử lý</option>
+                            <option value="processing">Đang xử lý</option>
+                            <option value="completed">Hoàn thành</option>
+                            <option value="cancelled">Đã hủy</option>
+                        </select>
+                        
+                        <div class="date-filter">
+                            <input type="date" class="date-input" placeholder="Từ ngày">
+                            <input type="date" class="date-input" placeholder="Đến ngày">
+                        </div>
+                    </div>
+
+                    <div class="orders-list">
+                        <div class="order-card">
+                            <div class="order-header">
+                                <h3>Đơn hàng #12345</h3>
+                                <span class="order-status success">Hoàn thành</span>
+                            </div>
+                            <div class="order-details">
+                                <div class="order-product">
+                                    <img src="https://via.placeholder.com/50" alt="Product">
+                                    <div class="product-info">
+                                        <h4>ChatGPT Plus</h4>
+                                        <p>Số lượng: 1</p>
+                                    </div>
+                                    <div class="product-price">2,000,000 VNĐ</div>
+                                </div>
+                            </div>
+                            <div class="order-footer">
+                                <span class="order-date">Ngày đặt: 15/03/2024</span>
+                                <button class="btn-primary">Xem chi tiết</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Wishlist Section -->
+            <section id="wishlist" class="dashboard-section">
+                <div class="dashboard-header">
+                    <h2>Sản Phẩm Yêu Thích</h2>
+                    <div class="wishlist-filters">
+                        <button class="filter-chip active">Tất cả</button>
+                        <button class="filter-chip">AI Tools</button>
+                        <button class="filter-chip">Software</button>
+                        <button class="filter-chip">Courses</button>
+                    </div>
+                </div>
+                
+                <div class="wishlist-grid">
+                    <div class="wishlist-card">
+                        <div class="wishlist-badge">Hot</div>
+                        <div class="wishlist-image">
+                            <img src="https://via.placeholder.com/300" alt="Product">
+                            <div class="wishlist-overlay">
+                                <button class="wishlist-btn remove"><i class="fas fa-heart-broken"></i></button>
+                                <button class="wishlist-btn cart"><i class="fas fa-shopping-cart"></i></button>
+                            </div>
+                        </div>
+                        <div class="wishlist-content">
+                            <div class="wishlist-category">AI Tools</div>
+                            <h3>ChatGPT Plus</h3>
+                            <div class="wishlist-price">
+                                <span class="current-price">2,000,000 VNĐ</span>
+                                <span class="original-price">2,500,000 VNĐ</span>
+                            </div>
+                            <div class="wishlist-meta">
+                                <span><i class="fas fa-star"></i> 4.9</span>
+                                <span><i class="fas fa-users"></i> 2.3k Users</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Thêm các wishlist card tương tự -->
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="dashboard-section">
+                <div class="dashboard-header">
+                    <h2>Cài Đặt</h2>
+                </div>
+                
+                <div class="settings-grid">
+                    <div class="settings-card">
+                        <div class="settings-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h3>Thông Báo</h3>
+                        <div class="settings-options">
+                            <div class="setting-option">
+                                <div class="option-info">
+                                    <span>Email thông báo</span>
+                                    <small>Nhận thông báo qua email</small>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox" checked>
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="setting-option">
+                                <div class="option-info">
+                                    <span>Thông báo đẩy</span>
+                                    <small>Thông báo trên trình duyệt</small>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <div class="settings-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Bảo Mật</h3>
+                        <div class="settings-options">
+                            <div class="setting-option">
+                                <div class="option-info">
+                                    <span>Xác thực 2 yếu tố</span>
+                                    <small>Tăng cường bảo mật tài khoản</small>
+                                </div>
+                                <label class="switch">
+                                    <input type="checkbox">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <button class="btn-outline">Đổi mật khẩu</button>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-card">
+                        <div class="settings-icon">
+                            <i class="fas fa-palette"></i>
+                        </div>
+                        <h3>Giao Diện</h3>
+                        <div class="settings-options">
+                            <div class="theme-options">
+                                <button class="theme-btn active" data-theme="dark">
+                                    <i class="fas fa-moon"></i>
+                                    <span>Dark</span>
+                                </button>
+                                <button class="theme-btn" data-theme="light">
+                                    <i class="fas fa-sun"></i>
+                                    <span>Light</span>
+                                </button>
+                                <button class="theme-btn" data-theme="system">
+                                    <i class="fas fa-laptop"></i>
+                                    <span>System</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Info Section -->
+            <section id="info" class="dashboard-section">
+                <div class="dashboard-header">
+                    <h2>Thông Tin Cá Nhân</h2>
+                </div>
+                
+                <div class="info-container">
+                    <div class="info-sidebar">
+                        <div class="profile-preview">
+                            <div class="profile-avatar">
+                                <img src="https://via.placeholder.com/150" alt="Profile">
+                                <button class="avatar-upload">
+                                    <i class="fas fa-camera"></i>
+                                </button>
+                            </div>
+                            <h3 id="previewProfileName"></h3>
+                            <p>Premium Member</p>
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <span class="stat-value">25</span>
+                                    <span class="stat-label">Đơn hàng</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">12</span>
+                                    <span class="stat-label">Yêu thích</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">1.5k</span>
+                                    <span class="stat-label">Điểm</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-main">
+                        <div class="info-tabs">
+                            <button class="tab-btn active">Thông tin cơ bản</button>
+                            <button class="tab-btn">Thanh toán</button>
+                            <button class="tab-btn">Địa chỉ</button>
+                        </div>
+                        
+                        <div class="info-form-container">
+                            <form class="info-form" id="basicInfoForm">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Họ và tên</label>
+                                        <div class="input-group">
+                                            <div class="input-icon">
+                                                <i class="fas fa-user"></i>
+                                                <input type="text" id="profileNameInput" class="form-input" readonly>
+                                            </div>
+                                            <button type="button" class="edit-btn" data-field="profileName">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </button>
+                                            <div class="confirm-actions">
+                                                <button type="button" class="confirm-btn" style="display: none">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button type="button" class="cancel-btn" style="display: none">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <div class="input-group">
+                                            <div class="input-icon">
+                                                <i class="fas fa-envelope"></i>
+                                                <input type="email" id="profileEmail" class="form-input" readonly>
+                                            </div>
+                                            <button type="button" class="edit-btn" data-field="profileEmail">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </button>
+                                            <div class="confirm-actions">
+                                                <button type="button" class="confirm-btn" style="display: none">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button type="button" class="cancel-btn" style="display: none">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Số điện thoại</label>
+                                        <div class="input-group">
+                                            <div class="input-icon">
+                                                <i class="fas fa-phone"></i>
+                                                <input type="tel" id="profilePhone" class="form-input" readonly>
+                                            </div>
+                                            <button type="button" class="edit-btn" data-field="profilePhone">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </button>
+                                            <div class="confirm-actions">
+                                                <button type="button" class="confirm-btn" style="display: none">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button type="button" class="cancel-btn" style="display: none">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Ngày sinh</label>
+                                        <div class="input-group">
+                                            <div class="input-icon">
+                                                <i class="fas fa-calendar"></i>
+                                                <input type="date" id="profileBirthDate" class="form-input" readonly>
+                                            </div>
+                                            <button type="button" class="edit-btn" data-field="profileBirthDate">
+                                                <i class="fas fa-pencil-alt"></i>
+                                            </button>
+                                            <div class="confirm-actions">
+                                                <button type="button" class="confirm-btn" style="display: none">
+                                                    <i class="fas fa-check"></i>
+                                                </button>
+                                                <button type="button" class="cancel-btn" style="display: none">
+                                                    <i class="fas fa-times"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Tab: Thanh toán -->
+                            <form class="info-form" id="paymentForm" style="display: none;">
+                                <div class="payment-methods">
+                                    <h4>Phương thức thanh toán</h4>
+                                    
+                                    <div class="payment-card">
+                                        <div class="card-header">
+                                            <i class="fab fa-cc-visa"></i>
+                                            <span>Visa ****1234</span>
+                                        </div>
+                                        <div class="card-actions">
+                                            <button type="button" class="btn-text">Chỉnh sửa</button>
+                                            <button type="button" class="btn-text danger">Xóa</button>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="btn-outline-primary add-payment">
+                                        <i class="fas fa-plus"></i>
+                                        Thêm phương thức thanh toán
+                                    </button>
+                                </div>
+
+                                <div class="billing-history">
+                                    <h4>Lịch sử thanh toán</h4>
+                                    <div class="billing-table">
+                                        <div class="billing-row header">
+                                            <span>Ngày</span>
+                                            <span>Mô tả</span>
+                                            <span>Số tiền</span>
+                                            <span>Trạng thái</span>
+                                        </div>
+                                        <div class="billing-row">
+                                            <span>15/03/2024</span>
+                                            <span>ChatGPT Plus</span>
+                                            <span>2,000,000 VNĐ</span>
+                                            <span class="status success">Thành công</span>
+                                        </div>
+                                        <!-- Add more billing rows as needed -->
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Tab: Địa chỉ -->
+                            <form class="info-form" id="addressForm" style="display: none;">
+                                <div class="address-list">
+                                    <div class="address-card">
+                                        <div class="address-badge primary">Mặc định</div>
+                                        <div class="address-content">
+                                            <h4>Nhà riêng</h4>
+                                            <p>123 Đường ABC, Phường XYZ</p>
+                                            <p>Quận 1, TP.HCM</p>
+                                            <p>Số điện thoại: 0123456789</p>
+                                        </div>
+                                        <div class="address-actions">
+                                            <button type="button" class="btn-text">Chỉnh sửa</button>
+                                            <button type="button" class="btn-text danger">Xóa</button>
+                                        </div>
+                                    </div>
+
+                                    <button type="button" class="btn-outline-primary add-address">
+                                        <i class="fas fa-plus"></i>
+                                        Thêm địa chỉ mới
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notifications Section -->
+            <section id="notifications" class="dashboard-section">
+                <div class="dashboard-header">
+                    <h2>Thông Báo</h2>
+                </div>
+                <div class="notifications-container">
+                    <div class="notification-filters">
+                        <button class="filter-btn active">Tất cả</button>
+                        <button class="filter-btn">Chưa đọc</button>
+                        <button class="filter-btn">Đã đọc</button>
+                    </div>
+                    
+                    <div class="notifications-list">
+                        <div class="notification-item unread">
+                            <div class="notification-icon">
+                                <i class="fas fa-shopping-cart"></i>
+                            </div>
+                            <div class="notification-content">
+                                <h4>Đơn hàng mới #12345</h4>
+                                <p>Đơn hàng của bạn đã được xác nhận và đang được xử lý</p>
+                                <span class="notification-time">2 giờ trước</span>
+                            </div>
+                            <button class="notification-action"><i class="fas fa-ellipsis-v"></i></button>
+                        </div>
+                        <!-- More notification items... -->
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer giống index.html -->
+    <footer class="footer">
+        <!-- Footer content từ index.html -->
+    </footer>
+    <script src="js/profile-auth.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>
