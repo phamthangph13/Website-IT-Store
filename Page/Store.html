@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cửa Hàng - Tech Store</title>
+    <link rel="stylesheet" href="../Comp/CSS/header.css">
+    <link rel="stylesheet" href="../Style/Home.css">
+    <link rel="stylesheet" href="../Form/StyleForm/Login.css">
+    <link rel="stylesheet" href="../Form/StyleForm/Register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../Form/StyleForm/ForgetPassword.css">
+    <link rel="stylesheet" href="../Comp/CSS/Footer.css">
+    <link rel="stylesheet" href="../Style/Store.css">
+</head>
+<body>
+    <!-- Header container -->
+    <div id="header-container"></div>
+
+    <!-- Modal containers -->
+    <div id="loginModal" class="modal"></div>
+    <div id="registerModal" class="modal"></div>
+    <div id="forgotPasswordModal" class="modal"></div>
+
+    <!-- Store Content -->
+    <main class="store-container">
+        <div class="store-hero">
+            <h1>Tech Store Premium</h1>
+            <p>Khám phá các sản phẩm và dịch vụ độc quyền</p>
+        </div>
+
+        <div class="category-filter">
+            <button class="filter-btn active" data-category="all">Tất cả</button>
+            <button class="filter-btn" data-category="robots">Robot</button>
+            <button class="filter-btn" data-category="services">Dịch vụ</button>
+        </div>
+
+        <div class="products-grid">
+            <!-- Robot Products -->
+            <div class="product-card" data-category="robots">
+                <div class="product-image">
+                    <img src="../assets/robot1.jpg" alt="Robot 1">
+                    <div class="premium-badge">Premium</div>
+                </div>
+                <div class="product-info">
+                    <h3>Robot Assistant X1</h3>
+                    <p>Trợ lý thông minh cao cấp</p>
+                    <button class="add-to-cart">Thêm vào giỏ hàng</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="robots">
+                <div class="product-image">
+                    <img src="../assets/robot2.jpg" alt="Robot 2">
+                    <div class="premium-badge">Premium</div>
+                </div>
+                <div class="product-info">
+                    <h3>Robot Cleaner Pro</h3>
+                    <p>Robot hút bụi thông minh</p>
+                    <button class="add-to-cart">Thêm vào giỏ hàng</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="robots">
+                <div class="product-image">
+                    <img src="../assets/robot3.jpg" alt="Robot 3">
+                </div>
+                <div class="product-info">
+                    <h3>Security Bot X2</h3>
+                    <p>Robot bảo vệ an ninh</p>
+                    <button class="add-to-cart">Thêm vào giỏ hàng</button>
+                </div>
+            </div>
+
+            <!-- Service Products -->
+            <div class="product-card" data-category="services">
+                <div class="product-image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMdM9MEQ0ExL1PmInT3U5I8v63YXBEdoIT0Q&s" alt="Service 1">
+                    <div class="premium-badge">Premium</div>
+                </div>
+                <div class="product-info">
+                    <h3>Chat GPT 4.0</h3>
+                    <p>Trợ lý thông minh cao cấp</p>
+                    <button class="add-to-cart">Sử dụng</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="services">
+                <div class="product-image">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTidhxPna1nlG-daSRGGhnGdqIzvuEZT8HkA&s" alt="Service 2">
+                </div>
+                <div class="product-info">
+                    <h3>SORA AI</h3>
+                    <p>Tạo ảnh và video AI</p>
+                    <button class="add-to-cart">Sử dụng</button>
+                </div>
+            </div>
+
+            <div class="product-card" data-category="services">
+                <div class="product-image">
+                    <img src="../assets/service3.jpg" alt="Service 3">
+                    <div class="premium-badge">Premium</div>
+                </div>
+                <div class="product-info">
+                    <h3>Photo AI</h3>
+                    <p>Tạo ảnh AI</p>
+                    <button class="add-to-cart">Sử dụng</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer container -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="../Comp/Comp.js"></script>
+    <script src="../JS/Auth.js"></script>
+    <script src="../JS/store.js"></script>
+</body>
+</html>

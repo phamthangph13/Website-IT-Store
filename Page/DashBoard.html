@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Tools & Tech Store</title>
+    <link rel="stylesheet" href="../Comp/CSS/header.css">
+    <link rel="stylesheet" href="../Style/Home.css">
+    <link rel="stylesheet" href="../Form/StyleForm/Login.css">
+    <link rel="stylesheet" href="../Form/StyleForm/Register.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="../Form/StyleForm/ForgetPassword.css">
+    <link rel="stylesheet" href="../Comp/CSS/Footer.css">
+    <link rel="stylesheet" href="../Style/DashBoard.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css">
+</head>
+<body> 
+    <!-- Header container -->
+    <div id="header-container"></div>
+
+    <!-- Modal containers - Thêm vào đây -->
+    <div id="loginModal" class="modal"></div>
+    <div id="registerModal" class="modal"></div>
+    <div id="forgotPasswordModal" class="modal"></div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar" data-aos="fade-right">
+            <div class="sidebar-header">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHbEB1-Dr0WWq3h2HYDaK0e-AklnBEjMcoSg&s" alt="User Avatar" class="avatar">
+                <h3>Welcome Back!</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#" data-page="profile">Trang Cá Nhân</a>
+                <a href="#" data-page="orders">Đặt Hàng</a>
+                <a href="#" data-page="services">Dịch Vụ</a>
+                <a href="#" data-page="settings">Cài Đặt</a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Profile Section -->
+            <section id="profile-section" class="dashboard-section">
+                <h2 class="section-title" data-aos="fade-right">Trang Cá Nhân</h2>
+                <div class="profile-grid">
+                    <!-- Thông tin cá nhân -->
+                    <div class="profile-card" data-aos="fade-up" data-aos-delay="100">
+                        <div class="profile-header">
+                            <div class="profile-avatar-container">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHbEB1-Dr0WWq3h2HYDaK0e-AklnBEjMcoSg&s" 
+                                     alt="Profile Avatar" 
+                                     class="profile-avatar">
+                                <div class="avatar-overlay">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                            </div>
+                            <h3>Nguyễn Văn A</h3>
+                            <p>@nguyenvana</p>
+                        </div>
+                        <div class="profile-stats">
+                            <div class="stat-item">
+                                <i class="fas fa-shopping-cart"></i>
+                                <div class="stat-details">
+                                    <span class="stat-value">12</span>
+                                    <span class="stat-label">Đơn hàng</span>
+                                </div>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-star"></i>
+                                <div class="stat-details">
+                                    <span class="stat-value">4.8</span>
+                                    <span class="stat-label">Đánh giá</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thông tin chi tiết -->
+                    <div class="profile-card" data-aos="fade-up" data-aos-delay="200">
+                        <h3>Thông Tin Chi Tiết</h3>
+                        <form class="profile-form">
+                            <div class="form-group">
+                                <label>Họ và Tên</label>
+                                <input type="text" value="Nguyễn Văn A" placeholder="Họ và tên">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" value="nguyenvana@example.com" placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <label>Số Điện Thoại</label>
+                                <input type="tel" value="0123456789" placeholder="Số điện thoại">
+                            </div>
+                            <div class="form-group">
+                                <label>Địa Chỉ</label>
+                                <input type="text" value="123 Đường ABC, Quận XYZ, TP.HCM" placeholder="Địa chỉ">
+                            </div>
+                            <button type="submit" class="btn-save">
+                                <i class="fas fa-save"></i> Lưu Thay Đổi
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Hoạt động gần đây -->
+                    <div class="profile-card" data-aos="fade-up" data-aos-delay="300">
+                        <h3>Hoạt Động Gần Đây</h3>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <i class="fas fa-shopping-bag"></i>
+                                <div class="activity-details">
+                                    <p>Đã mua AI Development Kit</p>
+                                    <span>2 giờ trước</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <i class="fas fa-star"></i>
+                                <div class="activity-details">
+                                    <p>Đánh giá 5 sao cho AI Chat Bot</p>
+                                    <span>1 ngày trước</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <i class="fas fa-comment"></i>
+                                <div class="activity-details">
+                                    <p>Bình luận về Machine Learning Course</p>
+                                    <span>3 ngày trước</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Orders Section -->
+            <section id="orders-section" class="dashboard-section" style="display: none;">
+                <h2 class="section-title" data-aos="fade-right">Đơn Hàng Của Bạn</h2>
+                <div class="orders-grid">
+                    <!-- Order Cards -->
+                    <div class="order-card" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="order-header">
+                            <span class="order-id">#ORD-2024-001</span>
+                            <span class="order-status pending">Đang xử lý</span>
+                        </div>
+                        <div class="order-details">
+                            <img src="../assets/product1.jpg" alt="Product" class="order-image">
+                            <div class="order-info">
+                                <h3>AI Development Kit</h3>
+                                <p>Số lượng: 1</p>
+                                <p class="order-price">2,999,000 ₫</p>
+                            </div>
+                        </div>
+                        <div class="order-actions">
+                            <button class="btn-track">Theo dõi</button>
+                            <button class="btn-cancel">Hủy đơn</button>
+                        </div>
+                    </div>
+                    <!-- More order cards... -->
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section id="services-section" class="dashboard-section" style="display: none;">
+                <h2 class="section-title" data-aos="fade-right">Dịch Vụ Của Chúng Tôi</h2>
+                
+                <!-- Free Services -->
+                <h3 class="services-subtitle free" data-aos="fade-right">
+                    <i class="fas fa-gift"></i> Dịch Vụ Miễn Phí
+                </h3>
+                <div class="services-grid">
+                    <div class="service-card free" data-aos="flip-left" data-aos-delay="100">
+                        <div class="service-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="service-badge">Free</div>
+                        <h3>AI Chat Basic</h3>
+                        <p>Trải nghiệm chat với AI cơ bản</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> 50 tin nhắn/ngày</li>
+                            <li><i class="fas fa-check"></i> Các câu trả lời cơ bản</li>
+                            <li><i class="fas fa-check"></i> Hỗ trợ tiếng Việt</li>
+                        </ul>
+                        <button class="btn-service">Dùng Ngay</button>
+                    </div>
+
+                    <div class="service-card free" data-aos="flip-left" data-aos-delay="200">
+                        <div class="service-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <div class="service-badge">Free</div>
+                        <h3>AI Image Basic</h3>
+                        <p>Tạo ảnh AI đơn giản</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> 5 ảnh/ngày</li>
+                            <li><i class="fas fa-check"></i> Độ phân giải cơ bản</li>
+                            <li><i class="fas fa-check"></i> Các mẫu có sẵn</li>
+                        </ul>
+                        <button class="btn-service">Dùng Ngay</button>
+                    </div>
+                </div>
+
+                <!-- Premium Services -->
+                <h3 class="services-subtitle premium" data-aos="fade-right">
+                    <i class="fas fa-crown"></i> Dịch Vụ Premium
+                </h3>
+                <div class="services-grid">
+                    <div class="service-card premium" data-aos="flip-left" data-aos-delay="300">
+                        <div class="service-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="service-badge premium">Premium</div>
+                        <h3>AI Development Pro</h3>
+                        <p>Giải pháp AI chuyên nghiệp</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> API tích hợp không giới hạn</li>
+                            <li><i class="fas fa-check"></i> Model AI tùy chỉnh</li>
+                            <li><i class="fas fa-check"></i> Hỗ trợ 24/7</li>
+                            <li><i class="fas fa-check"></i> Tư vấn chuyên sâu</li>
+                        </ul>
+                        <div class="service-price">
+                            <span>Chỉ từ</span>
+                            <h4>5,000,000 ₫</h4>
+                            <span>/tháng</span>
+                        </div>
+                        <button class="btn-service premium">Đăng Ký Ngay</button>
+                    </div>
+
+                    <div class="service-card premium" data-aos="flip-left" data-aos-delay="400">
+                        <div class="service-icon">
+                            <i class="fas fa-wand-magic-sparkles"></i>
+                        </div>
+                        <div class="service-badge premium">Premium</div>
+                        <h3>AI Creative Suite</h3>
+                        <p>Công cụ sáng tạo AI cao cấp</p>
+                        <ul class="service-features">
+                            <li><i class="fas fa-check"></i> Tạo ảnh không giới hạn</li>
+                            <li><i class="fas fa-check"></i> Độ phân giải cao 4K</li>
+                            <li><i class="fas fa-check"></i> Chat GPT-4 không giới hạn</li>
+                            <li><i class="fas fa-check"></i> Xuất các định dạng cao cấp</li>
+                        </ul>
+                        <div class="service-price">
+                            <span>Chỉ từ</span>
+                            <h4>3,000,000 ₫</h4>
+                            <span>/tháng</span>
+                        </div>
+                        <button class="btn-service premium">Đăng Ký Ngay</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings-section" class="dashboard-section" style="display: none;">
+                <h2 class="section-title" data-aos="fade-right">Cài Đặt Hệ Thống</h2>
+                <div class="settings-grid">
+                    <!-- Theme Settings Card -->
+                    <div class="settings-card" data-aos="fade-up" data-aos-delay="100">
+                        <h3><i class="fas fa-palette"></i> Giao Diện</h3>
+                        <div class="theme-selector">
+                            <button class="theme-btn active" data-theme="dark">
+                                <i class="fas fa-moon"></i> Dark
+                            </button>
+                            <button class="theme-btn" data-theme="light">
+                                <i class="fas fa-sun"></i> Light
+                            </button>
+                        </div>
+                        <div class="color-scheme">
+                            <h4>Màu sắc chủ đạo</h4>
+                            <div class="color-options">
+                                <div class="color-option" style="background: #4361ee"></div>
+                                <div class="color-option" style="background: #3f37c9"></div>
+                                <div class="color-option" style="background: #2a9d8f"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Settings Card -->
+                    <div class="settings-card" data-aos="fade-up" data-aos-delay="200">
+                        <h3><i class="fas fa-shield-alt"></i> Bảo Mật</h3>
+                        <form class="security-form">
+                            <div class="form-group">
+                                <label>Mật khẩu hiện tại</label>
+                                <div class="password-input">
+                                    <input type="password" placeholder="Nhập mật khẩu hiện tại">
+                                    <i class="fas fa-eye-slash toggle-password"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Mật khẩu mới</label>
+                                <div class="password-input">
+                                    <input type="password" placeholder="Nhập mật khẩu mới">
+                                    <i class="fas fa-eye-slash toggle-password"></i>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Xác nhận mật khẩu mới</label>
+                                <div class="password-input">
+                                    <input type="password" placeholder="Xác nhận mật khẩu mới">
+                                    <i class="fas fa-eye-slash toggle-password"></i>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-change-password">
+                                <i class="fas fa-key"></i> Đổi Mật Khẩu
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Account Actions Card -->
+                    <div class="settings-card danger-zone" data-aos="fade-up" data-aos-delay="300">
+                        <h3><i class="fas fa-exclamation-triangle"></i> Tài Khoản</h3>
+                        <div class="account-actions">
+                            <button class="btn-logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                                Đăng Xuất
+                            </button>
+                            <button class="btn-delete-account">
+                                <i class="fas fa-user-times"></i>
+                                Xóa Tài Khoản
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer container -->
+    <div id="footer-container"></div>
+
+    <!-- Scripts -->
+    <script src="../Comp/Comp.js"></script>
+    <script src="../JS/Auth.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="Hurst/Hurst.js"></script>
+    <script>
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out'
+        });
+    </script>
+</body>
+</html>
