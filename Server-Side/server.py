@@ -11,6 +11,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from flask_cors import CORS
 import jwt
 import os
+import string  # Thêm import này ở đầu file
 
 app = Flask(__name__)
 CORS(app, resources={
@@ -65,6 +66,17 @@ def send_otp_email(email, otp):
         server.login(SMTP_USERNAME, SMTP_PASSWORD)
         server.send_message(msg)
 
+def generate_unique_link(length=12):
+    """Tạo link ngẫu nhiên và đảm bảo không trùng trong database"""
+    while True:
+        # Tạo link ngẫu nhiên từ chữ và số
+        characters = string.ascii_letters + string.digits
+        random_link = ''.join(random.choice(characters) for _ in range(length))
+        
+        # Kiểm tra xem link đã tồn tại chưa
+        if not db.User.find_one({'account_link': random_link}):
+            return random_link
+
 @app.route('/register', methods=['POST'])
 def register():
     try:
@@ -106,19 +118,27 @@ def verify():
             del otp_storage[email]
             return jsonify({'success': False, 'message': 'OTP đã hết hạn'}), 400
 
-        # Save user to MongoDB
+        # Tạo link tài khoản độc nhất
+        account_link = generate_unique_link()
+
+        # Save user to MongoDB with account_link
         db.User.insert_one({
             'fullname': otp_storage[email]['fullname'],
             'email': email,
             'password': otp_storage[email]['password'],
             'role': 'Member',
+            'account_link': account_link,
             'createdAt': datetime.now()
         })
 
         # Clear OTP data
         del otp_storage[email]
 
-        return jsonify({'success': True, 'message': 'Đăng ký thành công'})
+        return jsonify({
+            'success': True, 
+            'message': 'Đăng ký thành công',
+            'account_link': account_link
+        })
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
 
@@ -144,7 +164,8 @@ def login():
                 'user': {
                     'fullname': user['fullname'],
                     'email': user['email'],
-                    'role': user['role']
+                    'role': user['role'],
+                    'account_link': user.get('account_link', '')  # Thêm account_link vào response
                 }
             })
         else:

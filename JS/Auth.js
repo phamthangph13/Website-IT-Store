@@ -495,7 +495,7 @@ function updateUIAfterLogin(user) {
                 userMenu.innerHTML = `
                     <div class="user-info">
                         <div class="user-dropdown">
-                            <a href="DashBoard.html">Trang Cá Nhân</a>
+                            <a href="DashBoard.html?account=${user.account_link}">Trang Cá Nhân</a>
                             ${user.role === 'Admin' ? '<a href="/admin">Quản trị</a>' : ''}
                             <a href="#" id="logout-btn">Đăng xuất</a>
                         </div> 
