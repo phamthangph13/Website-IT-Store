@@ -28,8 +28,12 @@
         <!-- Sidebar -->
         <div class="sidebar" data-aos="fade-right">
             <div class="sidebar-header">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHbEB1-Dr0WWq3h2HYDaK0e-AklnBEjMcoSg&s" alt="User Avatar" class="avatar">
-                <h3>Welcome Back!</h3>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHbEB1-Dr0WWq3h2HYDaK0e-AklnBEjMcoSg&s" 
+                     alt="Profile Avatar" 
+                     class="profile-avatar"
+                     style="width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 2px solid #4361ee;">
+                <h3 class="user-name">Loading...</h3>
+                <span class="user-role">Loading...</span>
             </div>
             <nav class="sidebar-nav">
                 <a href="#" data-page="profile">Trang Cá Nhân</a>
@@ -45,7 +49,7 @@
             <section id="profile-section" class="dashboard-section">
                 <h2 class="section-title" data-aos="fade-right">Trang Cá Nhân</h2>
                 <div class="profile-grid">
-                    <!-- Thông tin cá nhân -->
+                    <!-- Th��ng tin cá nhân -->
                     <div class="profile-card" data-aos="fade-up" data-aos-delay="100">
                         <div class="profile-header">
                             <div class="profile-avatar-container">
@@ -56,8 +60,8 @@
                                     <i class="fas fa-camera"></i>
                                 </div>
                             </div>
-                            <h3>Nguyễn Văn A</h3>
-                            <p>@nguyenvana</p>
+                            <h3>Loading...</h3>
+                            <p>@loading...</p>
                         </div>
                         <div class="profile-stats">
                             <div class="stat-item">
@@ -82,24 +86,22 @@
                         <h3>Thông Tin Chi Tiết</h3>
                         <form class="profile-form">
                             <div class="form-group">
-                                <label>Họ và Tên</label>
-                                <input type="text" value="Nguyễn Văn A" placeholder="Họ và tên">
-                            </div>
-                            <div class="form-group">
                                 <label>Email</label>
-                                <input type="email" value="nguyenvana@example.com" placeholder="Email">
+                                <input type="email" placeholder="Email" readonly>
                             </div>
                             <div class="form-group">
-                                <label>Số Điện Thoại</label>
-                                <input type="tel" value="0123456789" placeholder="Số điện thoại">
+                                <label>Họ và tên</label>
+                                <input type="text" placeholder="Họ và tên">
                             </div>
                             <div class="form-group">
-                                <label>Địa Chỉ</label>
-                                <input type="text" value="123 Đường ABC, Quận XYZ, TP.HCM" placeholder="Địa chỉ">
+                                <label>Số điện thoại</label>
+                                <input type="tel" placeholder="Số điện thoại">
                             </div>
-                            <button type="submit" class="btn-save">
-                                <i class="fas fa-save"></i> Lưu Thay Đổi
-                            </button>
+                            <div class="form-group">
+                                <label>Địa chỉ</label>
+                                <input type="text" placeholder="Địa chỉ">
+                            </div>
+                            <button type="submit">Lưu thay đổi</button>
                         </form>
                     </div>
 
@@ -333,6 +335,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="Hurst/Hurst.js"></script>
+    <script src="../JS/Dashboard.js"></script>
     <script>
         AOS.init({
             duration: 800,
