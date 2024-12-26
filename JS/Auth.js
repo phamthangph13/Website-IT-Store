@@ -1,3 +1,33 @@
+// Thêm URL base của server
+const API_BASE_URL = 'http://localhost:5000'; // Port mặc định của Flask
+
+// Thêm biến global để lưu trạng thái đăng nhập
+let currentUser = null;
+
+// Add this function near the top of your file, after the currentUser declaration
+function handleLoginSuccess(user, remember = false) {
+    // Store user data
+    currentUser = user;
+    
+    // Store in sessionStorage by default
+    sessionStorage.setItem('user', JSON.stringify(user));
+    
+    // If remember is checked, also store in localStorage
+    if (remember) {
+        localStorage.setItem('user', JSON.stringify(user));
+        
+        // Save login info if "Remember me" is checked
+        const loginInfo = {
+            email: document.getElementById('login-email').value,
+            password: document.getElementById('login-password').value
+        };
+        localStorage.setItem('savedLoginInfo', JSON.stringify(loginInfo));
+    }
+    
+    // Update UI
+    updateUIAfterLogin(user);
+}
+
 // Xử lý hiển thị modal login
 function initializeLoginModal() {
     const loginBtn = document.querySelector('.login-btn');
@@ -10,6 +40,14 @@ function initializeLoginModal() {
         if (xhr.readyState === 4 && xhr.status === 200) {
             loginModal.innerHTML = xhr.responseText;
             
+            // Tự động điền thông tin đăng nhập đã lưu
+            const savedInfo = JSON.parse(localStorage.getItem('savedLoginInfo') || '{}');
+            if (savedInfo.email) {
+                document.getElementById('login-email').value = savedInfo.email;
+                document.getElementById('login-password').value = savedInfo.password || '';
+                document.getElementById('remember').checked = true;
+            }
+
             // Thêm event listeners cho form đăng nhập
             const registerLink = loginModal.querySelector('.register-link a');
             const forgotPasswordLink = loginModal.querySelector('.forgot-password');
@@ -66,6 +104,38 @@ function initializeLoginModal() {
                     passwordInput.type = 'password';
                     this.classList.remove('fa-eye-slash');
                     this.classList.add('fa-eye');
+                }
+            });
+
+            // Thêm xử lý submit form đăng nhập
+            const loginForm = loginModal.querySelector('#loginForm');
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const email = document.getElementById('login-email').value;
+                const password = document.getElementById('login-password').value;
+                const remember = document.getElementById('remember').checked;
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email, password })
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        handleLoginSuccess(data.user, remember);
+                        loginModal.style.display = 'none';
+                        alert('Đăng nhập thành công!');
+                    } else {
+                        alert(data.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi đăng nhập');
                 }
             });
         }
@@ -147,13 +217,38 @@ function initializeRegisterModal(onlyLoadContent = false) {
             const registerForm = registerModal.querySelector('#registerForm');
             console.log('Register form:', registerForm);
 
-            registerForm.addEventListener('submit', function(e) {
-                console.log('Form submitted');
+            registerForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
+                const fullname = document.getElementById('register-fullname').value;
                 const email = document.getElementById('register-email').value;
-                console.log('Email:', email);
-                registerModal.style.display = 'none';
-                initializeVerifyModal(email);
+                const password = document.getElementById('register-password').value;
+                const confirmPassword = document.getElementById('register-confirm-password').value;
+
+                if (password !== confirmPassword) {
+                    alert('Mật khẩu xác nhận không khớp');
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/register`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ fullname, email, password })
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        registerModal.style.display = 'none';
+                        initializeVerifyModal(email);
+                    } else {
+                        alert(data.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi đăng ký');
+                }
             });
         }
     };
@@ -261,32 +356,179 @@ function initializeVerifyModal(email) {
                 verifyModal.style.display = 'none';
                 document.getElementById('registerModal').style.display = 'block';
             });
+
+            // Thêm xử lý submit form verify
+            const verifyForm = verifyModal.querySelector('#verifyForm');
+            verifyForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const otpInputs = verifyModal.querySelectorAll('.otp-input');
+                const otp = Array.from(otpInputs).map(input => input.value).join('');
+
+                try {
+                    const response = await fetch(`${API_BASE_URL}/verify`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email, otp })
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        alert('Đăng ký thành công!');
+                        verifyModal.style.display = 'none';
+                        document.getElementById('loginModal').style.display = 'block';
+                    } else {
+                        alert(data.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi xác thực');
+                }
+            });
+
+            // Cập nhật xử lý nút gửi lại mã
+            resendButton.addEventListener('click', async function() {
+                try {
+                    const response = await fetch(`${API_BASE_URL}/register`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ email })
+                    });
+
+                    const data = await response.json();
+                    if (data.success) {
+                        // Reset timer
+                        timeLeft = 60;
+                        resendButton.disabled = true;
+                        alert('Đã gửi lại mã OTP');
+                    } else {
+                        alert(data.message);
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    alert('Có lỗi xảy ra khi gửi lại mã');
+                }
+            });
         }
     };
     xhr.send();
 }
 
-// Khởi tạo khi DOM đã load xong
-document.addEventListener('DOMContentLoaded', function() {
-    // Đảm bảo các elements tồn tại trước khi thêm event listener
-    const loginBtn = document.querySelector('.login-btn');
-    const registerBtn = document.querySelector('.signup-btn');
+// Tách phần khởi tạo thành hàm riêng
+function initializeAuth() {
+    // Đảm bảo tất cả modal containers tồn tại
+    const containers = ['loginModal', 'registerModal', 'verifyModal', 'forgotPasswordModal'];
+    containers.forEach(id => {
+        if (!document.getElementById(id)) {
+            const div = document.createElement('div');
+            div.id = id;
+            div.className = id.includes('verify') ? 'verify-modal' : 'modal';
+            document.body.appendChild(div);
+        }
+    });
+
+    // Kiểm tra trạng thái đăng nhập
+    checkLoginState();
+
+    // Khởi tạo các modal và event listeners
+    initializeLoginModal();
+    initializeRegisterModal();
+}
+
+// Cập nhật hàm checkLoginState
+function checkLoginState() {
+    console.log('Checking login state...'); // Debug log
     
-    if (loginBtn) {
-        initializeLoginModal();
+    // Kiểm tra trong sessionStorage trước
+    let user = JSON.parse(sessionStorage.getItem('user'));
+    console.log('Session user:', user);
+    
+    if (!user) {
+        // Nếu không có trong sessionStorage, kiểm tra localStorage
+        user = JSON.parse(localStorage.getItem('user'));
+        console.log('Local storage user:', user);
+        if (user) {
+            // Nếu tìm thấy trong localStorage, copy sang sessionStorage
+            sessionStorage.setItem('user', JSON.stringify(user));
+        } else {
+            // Nếu không có user và đang ở trang Dashboard, chuyển về Home
+            if (window.location.pathname.includes('DashBoard.html')) {
+                window.location.replace('Home.html');
+            }
+        }
     }
-    
-    if (registerBtn) {
-        initializeRegisterModal();
+
+    if (user) {
+        currentUser = user;
+        updateUIAfterLogin(user);
+        return true;
     }
+    return false;
+}
+
+// Cập nhật hàm updateUIAfterLogin
+function updateUIAfterLogin(user) {
+    console.log('Updating UI for user:', user);
+    if (!user) return;
+
+    // Đợi cho đến khi header được load xong
+    const waitForHeader = setInterval(() => {
+        const navLinks = document.querySelector('.nav-links');
+        if (navLinks) {
+            clearInterval(waitForHeader);
+            
+            // Ẩn nút đăng nhập và đăng ký
+            const loginBtn = document.querySelector('.login-btn');
+            const signupBtn = document.querySelector('.signup-btn');
+            if (loginBtn) loginBtn.style.display = 'none';
+            if (signupBtn) signupBtn.style.display = 'none';
+
+            // Tạo hoặc cập nhật menu user
+            let userMenu = document.querySelector('.user-menu');
+            if (!userMenu) {
+                userMenu = document.createElement('div');
+                userMenu.className = 'user-menu';
+                userMenu.innerHTML = `
+                    <div class="user-info">
+                        <div class="user-dropdown">
+                            <a href="DashBoard.html">Trang Cá Nhân</a>
+                            ${user.role === 'Admin' ? '<a href="/admin">Quản trị</a>' : ''}
+                            <a href="#" id="logout-btn">Đăng xuất</a>
+                        </div> 
+                    </div>
+                `;
+                navLinks.appendChild(userMenu);
+
+                // Thêm xử lý đăng xuất
+                const logoutBtn = document.getElementById('logout-btn');
+                if (logoutBtn) {
+                    logoutBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        logout();
+                    });
+                }
+            }
+        }
+    }, 100);
+}
+
+// Cập nhật hàm đăng xuất
+function logout() {
+    currentUser = null;
+    sessionStorage.removeItem('user');
+    localStorage.removeItem('user');
+    localStorage.removeItem('savedLoginInfo'); // Xóa thêm thông tin đăng nhập đã lưu
     
-    // Menu toggle
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
+    // Thay thế trang hiện tại trong lịch sử và chuyển về Home
+    window.location.replace('Home.html');
     
-    if (menuToggle && navLinks) {
-        menuToggle.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
-        });
-    }
-});
+    // Ngăn chặn quay lại bằng cách xóa lịch sử
+    window.history.pushState(null, '', 'Home.html');
+    window.onpopstate = function () {
+        window.history.pushState(null, '', 'Home.html');
+    };
+}

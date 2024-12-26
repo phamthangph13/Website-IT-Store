@@ -4,14 +4,15 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.text())
         .then(data => {
             document.getElementById('header-container').innerHTML = data;
-            // Khởi tạo các event listeners sau khi header đã được load
-            initializeLoginModal();
-            initializeRegisterModal();
+            // Gọi hàm khởi tạo Auth sau khi load header xong
+            if (typeof initializeAuth === 'function') {
+                initializeAuth();
+            }
         })
         .catch(error => console.error('Error loading header:', error));
 
     // Load footer
-    fetch('../Comp/Footer.html')
+    fetch('../Comp/footer.html')
         .then(response => response.text())
         .then(data => {
             document.getElementById('footer-container').innerHTML = data;
