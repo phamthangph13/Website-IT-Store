@@ -595,8 +595,29 @@ body {
 .settings-card {
     background: var(--card-color);
     border-radius: 15px;
-    padding: 20px;
+    padding: 25px;
+    margin-bottom: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.settings-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    border-color: var(--primary-color);
+}
+
+.settings-card h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.settings-card h3 i {
+    color: var(--primary-color);
 }
 
 .theme-selector {
@@ -607,36 +628,51 @@ body {
 
 .theme-btn {
     flex: 1;
-    padding: 10px;
+    padding: 12px;
     border: 1px solid var(--border-color);
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.05);
     color: var(--text-color);
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.theme-btn:hover {
+    background: rgba(67, 97, 238, 0.1);
+    border-color: var(--primary-color);
 }
 
 .theme-btn.active {
     background: var(--primary-color);
     color: white;
+    border-color: var(--primary-color);
 }
 
 .color-options {
     display: flex;
-    gap: 10px;
-    margin-top: 10px;
+    gap: 15px;
 }
 
 .color-option {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     cursor: pointer;
-    transition: var(--transition);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
 .color-option:hover {
     transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(67, 97, 238, 0.3);
+}
+
+.color-option.active {
+    border-color: var(--text-color);
 }
 
 /* Switch styles */
@@ -1982,7 +2018,3 @@ input:checked + .slider:before {
         box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
     }
 }
-
-
-
-

@@ -18,7 +18,7 @@
     <!-- Header container -->
     <div id="header-container"></div>
 
-    <!-- Modal containers - Thêm vào đây -->
+    <!-- Modal containers -->
     <div id="loginModal" class="modal"></div>
     <div id="registerModal" class="modal"></div>
     <div id="forgotPasswordModal" class="modal"></div>
@@ -28,12 +28,12 @@
         <!-- Sidebar -->
         <div class="sidebar" data-aos="fade-right">
             <div class="sidebar-header">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHbEB1-Dr0WWq3h2HYDaK0e-AklnBEjMcoSg&s" 
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA..." 
                      alt="Profile Avatar" 
                      class="profile-avatar"
                      style="width: 160px; height: 160px; border-radius: 50%; object-fit: cover; border: 2px solid #4361ee;">
-                <h3 class="user-name">Loading...</h3>
-                <span class="user-role">Loading...</span>
+                <h3 class="user-name"></h3>
+                <span class="user-role"></span>
             </div>
             <nav class="sidebar-nav">
                 <a href="#" data-page="profile">Trang Cá Nhân</a>
@@ -49,32 +49,32 @@
             <section id="profile-section" class="dashboard-section">
                 <h2 class="section-title" data-aos="fade-right">Trang Cá Nhân</h2>
                 <div class="profile-grid">
-                    <!-- Th��ng tin cá nhân -->
+                    <!-- Thông tin cá nhân -->
                     <div class="profile-card" data-aos="fade-up" data-aos-delay="100">
                         <div class="profile-header">
                             <div class="profile-avatar-container">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHbEB1-Dr0WWq3h2HYDaK0e-AklnBEjMcoSg&s" 
+                                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA..." 
                                      alt="Profile Avatar" 
                                      class="profile-avatar">
                                 <div class="avatar-overlay">
                                     <i class="fas fa-camera"></i>
                                 </div>
                             </div>
-                            <h3>Loading...</h3>
-                            <p>@loading...</p>
+                            <h3></h3>
+                            <p></p>
                         </div>
                         <div class="profile-stats">
                             <div class="stat-item">
                                 <i class="fas fa-shopping-cart"></i>
                                 <div class="stat-details">
-                                    <span class="stat-value">12</span>
+                                    <span class="stat-value">0</span>
                                     <span class="stat-label">Đơn hàng</span>
                                 </div>
                             </div>
                             <div class="stat-item">
                                 <i class="fas fa-star"></i>
                                 <div class="stat-details">
-                                    <span class="stat-value">4.8</span>
+                                    <span class="stat-value">0.0</span>
                                     <span class="stat-label">Đánh giá</span>
                                 </div>
                             </div>
@@ -87,19 +87,19 @@
                         <form class="profile-form">
                             <div class="form-group">
                                 <label>Email</label>
-                                <input type="email" placeholder="Email" readonly>
+                                <input type="email" id="emailInput" placeholder="Email" readonly>
                             </div>
                             <div class="form-group">
                                 <label>Họ và tên</label>
-                                <input type="text" placeholder="Họ và tên">
+                                <input type="text" id="fullnameInput" placeholder="Họ và tên">
                             </div>
                             <div class="form-group">
                                 <label>Số điện thoại</label>
-                                <input type="tel" placeholder="Số điện thoại">
+                                <input type="tel" id="phoneInput" placeholder="Số điện thoại">
                             </div>
                             <div class="form-group">
                                 <label>Địa chỉ</label>
-                                <input type="text" placeholder="Địa chỉ">
+                                <input type="text" id="addressInput" placeholder="Địa chỉ">
                             </div>
                             <button type="submit">Lưu thay đổi</button>
                         </form>
@@ -329,18 +329,21 @@
     <!-- Footer container -->
     <div id="footer-container"></div>
 
-    <!-- Scripts -->
-    <script src="../Comp/Comp.js"></script>
-    <script src="../JS/Auth.js"></script>
+    <!-- Scripts - Sắp xếp lại thứ tự -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="Hurst/Hurst.js"></script>
-    <script src="../JS/Dashboard.js"></script>
     <script>
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out'
+        // Khởi tạo AOS sau khi tất cả scripts đã load
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true // Thêm option này để animation chỉ chạy một lần
+            });
         });
     </script>
+    <script src="../Comp/Comp.js"></script>
+    <script src="../JS/Auth.js"></script>
+    <script src="../JS/Dashboard.js"></script>
 </body>
 </html>

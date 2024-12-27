@@ -11,46 +11,87 @@ function getUserFromURL() {
     return urlParams.get('account');
 }
 
+// Thêm hàm kiểm tra DOM đã sẵn sàng
+function isDOMReady() {
+    return new Promise(resolve => {
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            resolve();
+        } else {
+            document.addEventListener('DOMContentLoaded', resolve);
+        }
+    });
+}
+
 // Hàm để điền thông tin người dùng vào trang
 function populateUserInfo(userData) {
-    // Cập nhật avatar
-    const avatarElements = document.querySelectorAll('.profile-avatar');
-    avatarElements.forEach(avatar => {
-        avatar.src = userData.avatar;
-    });
-
-    // Cập nhật tên và role trong sidebar
-    const userNameElement = document.querySelector('.sidebar-header .user-name');
-    const userRoleElement = document.querySelector('.sidebar-header .user-role');
-    
-    if (userNameElement) {
-        userNameElement.textContent = userData.fullname || 'Chưa cập nhật';
-    }
-    
-    if (userRoleElement) {
-        userRoleElement.textContent = userData.role || 'Member';
-        userRoleElement.className = 'user-role'; // Reset classes
-        userRoleElement.classList.add(userData.role?.toLowerCase() === 'premium' ? 'premium' : 'member');
+    if (!userData) {
+        return;
     }
 
-    // Cập nhật tên và username trong profile card
-    document.querySelector('.profile-header h3').textContent = userData.fullname || 'Chưa cập nhật';
-    document.querySelector('.profile-header p').textContent = `@${userData.account_link}`;
+    // Cập nhật selectors để sử dụng ID
+    const elements = {
+        avatars: document.querySelectorAll('.profile-avatar'),
+        userName: document.querySelector('.sidebar-header .user-name'),
+        userRole: document.querySelector('.sidebar-header .user-role'),
+        profileName: document.querySelector('.profile-header h3'),
+        profileUsername: document.querySelector('.profile-header p'),
+        emailInput: document.getElementById('emailInput'),
+        fullnameInput: document.getElementById('fullnameInput'),
+        phoneInput: document.getElementById('phoneInput'),
+        addressInput: document.getElementById('addressInput'),
+        statsOrders: document.querySelector('.stat-value'),
+        statsRating: document.querySelectorAll('.stat-value')[1]
+    };
 
-    // Cập nhật form thông tin chi tiết
-    const emailInput = document.querySelector('input[placeholder="Email"]');
-    emailInput.value = userData.email;
-    emailInput.setAttribute('readonly', true);
+    // Cập nhật các trường input
+    if (elements.emailInput) {
+        elements.emailInput.value = userData.email || '';
+    }
 
-    // Cập nhật các trường thông tin khác
-    document.querySelector('input[placeholder="Họ và tên"]').value = userData.fullname || '';
-    document.querySelector('input[placeholder="Số điện thoại"]').value = userData.phone || '';
-    document.querySelector('input[placeholder="Địa chỉ"]').value = userData.address || '';
+    if (elements.fullnameInput) {
+        elements.fullnameInput.value = userData.fullname || '';
+    }
+
+    if (elements.phoneInput) {
+        elements.phoneInput.value = userData.phone || '';
+    }
+
+    if (elements.addressInput) {
+        elements.addressInput.value = userData.address || '';
+    }
+
+    // Cập nhật các thông tin khác như cũ
+    if (elements.avatars?.length > 0) {
+        elements.avatars.forEach(avatar => {
+            avatar.src = userData.avatar;
+        });
+    }
+
+    if (elements.userName) {
+        elements.userName.textContent = userData.fullname || 'Chưa cập nhật';
+    }
+
+    if (elements.userRole) {
+        elements.userRole.textContent = userData.role || 'Member';
+        elements.userRole.className = 'user-role';
+        elements.userRole.classList.add(userData.role?.toLowerCase() === 'premium' ? 'premium' : 'member');
+    }
+
+    if (elements.profileName) {
+        elements.profileName.textContent = userData.fullname || 'Chưa cập nhật';
+    }
+
+    if (elements.profileUsername) {
+        elements.profileUsername.textContent = `@${userData.account_link}`;
+    }
 
     // Cập nhật thống kê
-    if (userData.stats) {
-        document.querySelector('.stat-value').textContent = userData.stats.orders || '0';
-        document.querySelectorAll('.stat-value')[1].textContent = userData.stats.rating || '0.0';
+    if (elements.statsOrders) {
+        elements.statsOrders.textContent = userData.stats?.orders || '0';
+    }
+
+    if (elements.statsRating) {
+        elements.statsRating.textContent = userData.stats?.rating || '0.0';
     }
 }
 
@@ -58,7 +99,11 @@ function populateUserInfo(userData) {
 async function fetchUserData(accountLink) {
     try {
         const response = await fetch(`${API_BASE_URL}/user/${accountLink}`);
-        if (!response.ok) throw new Error('Failed to fetch user data');
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch user data');
+        }
+        
         const userData = await response.json();
         return userData;
     } catch (error) {
@@ -186,67 +231,87 @@ async function handleAvatarUpload(file, accountLink) {
 
 // Hàm khởi tạo trang
 async function initializeDashboard() {
-    const accountLink = getUserFromURL();
-    if (!accountLink) {
-        alert('Không tìm thấy thông tin người dùng');
-        window.location.href = 'Home.html';
-        return;
-    }
+    try {
+        await isDOMReady();
 
-    const userData = await fetchUserData(accountLink);
-    if (userData) {
-        populateUserInfo(userData);
-
-        // Tạo và thêm input file một lần duy nhất
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = 'image/*';
-        fileInput.style.display = 'none';
-        document.body.appendChild(fileInput);
-
-        // Xử lý khi chọn file
-        fileInput.addEventListener('change', async (e) => {
-            const file = e.target.files?.[0];
-            if (!file) return;
-
-            if (!file.type.startsWith('image/')) {
-                alert('Vui lòng chọn file hình ảnh');
-                return;
-            }
-
-            await handleAvatarUpload(file, accountLink);
-            // Clear input để có thể chọn lại cùng file nếu cần
-            fileInput.value = '';
-        });
-
-        // Xử lý click vào avatar container
-        let avatarContainer = document.querySelector('.profile-avatar-container');
-        // Xóa tất cả event listeners hiện có
-        avatarContainer = removeAllEventListeners(avatarContainer);
+        const accountLink = getUserFromURL();
         
-        // Thêm event listener mới
-        avatarContainer.onclick = (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            if (!isUploading) {
-                fileInput.click();
-            }
-        };
+        if (!accountLink) {
+            window.location.href = 'Home.html';
+            return;
+        }
 
-        // Xử lý form submit
-        const profileForm = document.querySelector('.profile-form');
+        let retryCount = 0;
+        let userData = null;
+        const maxRetries = 5; // Tăng số lần thử lại
+        const retryDelay = 1000; // 1 giây
+
+        while (retryCount < maxRetries && !userData) {
+            userData = await fetchUserData(accountLink);
+            
+            if (!userData) {
+                retryCount++;
+                await new Promise(resolve => setTimeout(resolve, retryDelay));
+            }
+        }
+
+        if (!userData) {
+            alert('Không thể tải thông tin người dùng');
+            return;
+        }
+
+        populateUserInfo(userData);
+        setupEventListeners(accountLink);
+
+    } catch (error) {
+        alert('Có lỗi xảy ra khi khởi tạo trang');
+    }
+}
+
+// Tách phần setup event listeners thành hàm riêng
+function setupEventListeners(accountLink) {
+    const fileInput = document.createElement('input');
+    fileInput.type = 'file';
+    fileInput.accept = 'image/*';
+    fileInput.style.display = 'none';
+    document.body.appendChild(fileInput);
+
+    fileInput.addEventListener('change', async (e) => {
+        const file = e.target.files?.[0];
+        if (!file) return;
+
+        if (!file.type.startsWith('image/')) {
+            alert('Vui lòng chọn file hình ảnh');
+            return;
+        }
+
+        await handleAvatarUpload(file, accountLink);
+        fileInput.value = '';
+    });
+
+    let avatarContainer = document.querySelector('.profile-avatar-container');
+    avatarContainer = removeAllEventListeners(avatarContainer);
+    
+    avatarContainer.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        if (!isUploading) {
+            fileInput.click();
+        }
+    };
+
+    const profileForm = document.querySelector('.profile-form');
+    if (profileForm) {
         profileForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Chỉ lấy các trường có thể chỉnh sửa
             const formData = {
-                fullname: profileForm.querySelector('input[placeholder="Họ và tên"]').value.trim(),
-                phone: profileForm.querySelector('input[placeholder="Số điện thoại"]').value.trim(),
-                address: profileForm.querySelector('input[placeholder="Địa chỉ"]').value.trim()
+                fullname: profileForm.querySelector('input[placeholder="Họ và tên"]')?.value.trim(),
+                phone: profileForm.querySelector('input[placeholder="Số điện thoại"]')?.value.trim(),
+                address: profileForm.querySelector('input[placeholder="Địa chỉ"]')?.value.trim()
             };
 
-            // Validate số điện thoại nếu có nhp
             if (formData.phone && !/^[0-9]{10}$/.test(formData.phone)) {
                 alert('Số điện thoại không hợp lệ (phải có 10 chữ số)');
                 return;
@@ -254,10 +319,38 @@ async function initializeDashboard() {
 
             await handleProfileUpdate(accountLink, formData);
         });
-    } else {
-        alert('Không thể tải thông tin người dùng');
     }
+
+    // Thêm xử lý chuyển đổi tab
+    const sidebarLinks = document.querySelectorAll('.sidebar-nav a');
+    const sections = document.querySelectorAll('.dashboard-section');
+    
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Xóa active class từ tất cả links
+            sidebarLinks.forEach(l => l.classList.remove('active'));
+            
+            // Thêm active class cho link được click
+            link.classList.add('active');
+            
+            // Ẩn tất cả sections
+            sections.forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // Hiển thị section tương ứng
+            const targetSection = document.getElementById(`${link.dataset.page}-section`);
+            if (targetSection) {
+                targetSection.style.display = 'block';
+                
+                // Kích hoạt lại animation AOS
+                AOS.refresh();
+            }
+        });
+    });
 }
 
-// Khởi tạo khi trang load xong
-document.addEventListener('DOMContentLoaded', initializeDashboard);
+// Khởi tạo khi trang load
+window.addEventListener('load', initializeDashboard);
