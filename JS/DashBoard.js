@@ -1,4 +1,5 @@
 // Thêm vào đầu file
+
 function removeAllEventListeners(element) {
     const clone = element.cloneNode(true);
     element.parentNode.replaceChild(clone, element);

@@ -399,5 +399,57 @@ def get_products():
             'message': str(e)
         }), 500
 
+@app.route('/services', methods=['GET'])
+def get_services():
+    try:
+        services = list(db.Product.find({"category": "services"}))
+        for service in services:
+            service['_id'] = str(service['_id'])
+        
+        return jsonify({
+            'success': True,
+            'services': services
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
+@app.route('/services/use/<service_id>', methods=['POST'])
+def use_service(service_id):
+    try:
+        data = request.get_json()
+        user_id = data.get('userId')        
+        return jsonify({
+            'success': True,
+            'message': 'Bắt đầu sử dụng dịch vụ thành công'
+        })
+    except Exception as e:
+    
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
+@app.route('/user/check-role/<account_link>', methods=['GET'])
+def check_user_role(account_link):
+    try:
+        user = db.User.find_one({'account_link': account_link})
+        if user:
+            return jsonify({
+                'success': True,
+                'role': user['role']
+            })
+        return jsonify({
+            'success': False,
+            'message': 'User not found'
+        }), 404
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
 if __name__ == '__main__':
     app.run(debug=True)

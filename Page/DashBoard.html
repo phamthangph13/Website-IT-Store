@@ -170,84 +170,16 @@
                 <h3 class="services-subtitle free" data-aos="fade-right">
                     <i class="fas fa-gift"></i> Dịch Vụ Miễn Phí
                 </h3>
-                <div class="services-grid">
-                    <div class="service-card free" data-aos="flip-left" data-aos-delay="100">
-                        <div class="service-icon">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <div class="service-badge">Free</div>
-                        <h3>AI Chat Basic</h3>
-                        <p>Trải nghiệm chat với AI cơ bản</p>
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> 50 tin nhắn/ngày</li>
-                            <li><i class="fas fa-check"></i> Các câu trả lời cơ bản</li>
-                            <li><i class="fas fa-check"></i> Hỗ trợ tiếng Việt</li>
-                        </ul>
-                        <button class="btn-service">Dùng Ngay</button>
-                    </div>
-
-                    <div class="service-card free" data-aos="flip-left" data-aos-delay="200">
-                        <div class="service-icon">
-                            <i class="fas fa-image"></i>
-                        </div>
-                        <div class="service-badge">Free</div>
-                        <h3>AI Image Basic</h3>
-                        <p>Tạo ảnh AI đơn giản</p>
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> 5 ảnh/ngày</li>
-                            <li><i class="fas fa-check"></i> Độ phân giải cơ bản</li>
-                            <li><i class="fas fa-check"></i> Các mẫu có sẵn</li>
-                        </ul>
-                        <button class="btn-service">Dùng Ngay</button>
-                    </div>
+                <div class="services-grid" id="free-services-grid">
+                    <!-- Free services will be dynamically inserted here -->
                 </div>
 
                 <!-- Premium Services -->
                 <h3 class="services-subtitle premium" data-aos="fade-right">
                     <i class="fas fa-crown"></i> Dịch Vụ Premium
                 </h3>
-                <div class="services-grid">
-                    <div class="service-card premium" data-aos="flip-left" data-aos-delay="300">
-                        <div class="service-icon">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                        <div class="service-badge premium">Premium</div>
-                        <h3>AI Development Pro</h3>
-                        <p>Giải pháp AI chuyên nghiệp</p>
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> API tích hợp không giới hạn</li>
-                            <li><i class="fas fa-check"></i> Model AI tùy chỉnh</li>
-                            <li><i class="fas fa-check"></i> Hỗ trợ 24/7</li>
-                            <li><i class="fas fa-check"></i> Tư vấn chuyên sâu</li>
-                        </ul>
-                        <div class="service-price">
-                            <span>Chỉ từ</span>
-                            <h4>5,000,000 ₫</h4>
-                            <span>/tháng</span>
-                        </div>
-                        <button class="btn-service premium">Đăng Ký Ngay</button>
-                    </div>
-
-                    <div class="service-card premium" data-aos="flip-left" data-aos-delay="400">
-                        <div class="service-icon">
-                            <i class="fas fa-wand-magic-sparkles"></i>
-                        </div>
-                        <div class="service-badge premium">Premium</div>
-                        <h3>AI Creative Suite</h3>
-                        <p>Công cụ sáng tạo AI cao cấp</p>
-                        <ul class="service-features">
-                            <li><i class="fas fa-check"></i> Tạo ảnh không giới hạn</li>
-                            <li><i class="fas fa-check"></i> Độ phân giải cao 4K</li>
-                            <li><i class="fas fa-check"></i> Chat GPT-4 không giới hạn</li>
-                            <li><i class="fas fa-check"></i> Xuất các định dạng cao cấp</li>
-                        </ul>
-                        <div class="service-price">
-                            <span>Chỉ từ</span>
-                            <h4>3,000,000 ₫</h4>
-                            <span>/tháng</span>
-                        </div>
-                        <button class="btn-service premium">Đăng Ký Ngay</button>
-                    </div>
+                <div class="services-grid" id="premium-services-grid">
+                    <!-- Premium services will be dynamically inserted here -->
                 </div>
             </section>
 
@@ -345,5 +277,6 @@
     <script src="../Comp/Comp.js"></script>
     <script src="../JS/Auth.js"></script>
     <script src="../JS/Dashboard.js"></script>
+    <script type="module" src="../JS/Services.js"></script>
 </body>
 </html>
