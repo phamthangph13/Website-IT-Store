@@ -379,5 +379,25 @@ def update_avatar(account_link):
             'error': str(e)
         }), 500
 
+@app.route('/products', methods=['GET'])
+def get_products():
+    try:
+        # Lấy tất cả sản phẩm từ collection
+        products = list(db.Product.find())
+        
+        # Chuyển đổi ObjectId thành string để có thể serialize
+        for product in products:
+            product['_id'] = str(product['_id'])
+        
+        return jsonify({
+            'success': True,
+            'products': products
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
 if __name__ == '__main__':
     app.run(debug=True)

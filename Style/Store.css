@@ -385,3 +385,14 @@
     box-shadow: 0 2px 8px rgba(33, 150, 243, 0.3);
 }
 
+/* Thêm style cho nút "Sử dụng ngay" */
+.add-to-cart.use-now {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+}
+
+.add-to-cart.use-now:hover {
+    background: linear-gradient(135deg, #45a049, #388E3C);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.4);
+}
+
