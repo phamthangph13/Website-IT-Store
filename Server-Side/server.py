@@ -62,7 +62,7 @@ def send_otp_email(email, otp):
         server.login(SMTP_USERNAME, SMTP_PASSWORD)
         server.send_message(msg)
 
-def generate_unique_link(length=12):
+def generate_unique_link(length=200):
     while True:
         characters = string.ascii_letters + string.digits
         random_link = ''.join(random.choice(characters) for _ in range(length))
