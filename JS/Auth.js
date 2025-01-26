@@ -54,7 +54,7 @@ function initializeLoginModal() {
             
             // Chuyển sang form đăng ký
             registerLink.addEventListener('click', function(e) {
-                e.preventDefault();
+                e.preventDefault(); 
                 loginModal.style.display = 'none';
                 // Đảm bảo registerModal đã được khởi tạo
                 const registerModal = document.getElementById('registerModal');
@@ -518,17 +518,55 @@ function updateUIAfterLogin(user) {
 
 // Cập nhật hàm đăng xuất
 function logout() {
+    // Xóa dữ liệu người dùng khỏi storage
     currentUser = null;
     sessionStorage.removeItem('user');
     localStorage.removeItem('user');
-    localStorage.removeItem('savedLoginInfo'); // Xóa thêm thông tin đăng nhập đã lưu
+    localStorage.removeItem('savedLoginInfo');
     
-    // Thay thế trang hiện tại trong lịch sử và chuyển về Home
-    window.location.replace('Home.html');
+    // Chuyển hướng về trang chủ
+    window.location.replace('index.html');
     
     // Ngăn chặn quay lại bằng cách xóa lịch sử
-    window.history.pushState(null, '', 'Home.html');
-    window.onpopstate = function () {
-        window.history.pushState(null, '', 'Home.html');
+    window.history.pushState(null, '', 'index.html');
+    window.onpopstate = function() {
+        window.history.pushState(null, '', 'index.html');
     };
+}
+
+// Thêm hàm mới để xử lý đổi mật khẩu
+async function changePassword(currentPassword, newPassword, confirmPassword) {
+    try {
+        // Kiểm tra mật khẩu mới và xác nhận mật khẩu
+        if (newPassword !== confirmPassword) {
+            throw new Error('Mật khẩu xác nhận không khớp');
+        }
+
+        // Lấy thông tin người dùng từ storage
+        const user = JSON.parse(sessionStorage.getItem('user') || localStorage.getItem('user'));
+        if (!user || !user.account_link) {
+            throw new Error('Không tìm thấy thông tin người dùng');
+        }
+
+        // Gọi API đổi mật khẩu
+        const response = await fetch(`${API_BASE_URL}/user/change-password/${user.account_link}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                currentPassword,
+                newPassword
+            })
+        });
+
+        const data = await response.json();
+        if (!data.success) {
+            throw new Error(data.message);
+        }
+
+        return data;
+    } catch (error) {
+        throw error;
+    }
 }

@@ -18,7 +18,7 @@ app = Flask(__name__)
 CORS(app, resources={
     r"/*": {
         "origins": ["http://127.0.0.1:5500", "http://localhost:5500"],
-        "methods": ["GET", "POST", "OPTIONS"],
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         "allow_headers": ["Content-Type"]
     }
 })
@@ -70,6 +70,13 @@ def generate_unique_link(length=200):
         if not db.User.find_one({'account_link': random_link}):
             return random_link
 
+def generate_account_name(length=random.randint(5, 8)):
+    characters = string.ascii_letters + string.digits
+    while True:
+        account_name = ''.join(random.choice(characters) for _ in range(length))
+        if not db.User.find_one({'account_name': account_name}):
+            return account_name
+
 @app.route('/register', methods=['POST'])
 def register():
     try:
@@ -108,6 +115,7 @@ def verify():
             return jsonify({'success': False, 'message': 'OTP đã hết hạn'}), 400
 
         account_link = generate_unique_link()
+        account_name = generate_account_name()
 
         db.User.insert_one({
             'fullname': otp_storage[email]['fullname'],
@@ -115,6 +123,7 @@ def verify():
             'password': otp_storage[email]['password'],
             'role': 'Member',
             'account_link': account_link,
+            'account_name': account_name,
             'avatar': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHbEB1-Dr0WWq3h2HYDaK0e-AklnBEjMcoSg&s',
             'createdAt': datetime.now()
         })
@@ -124,7 +133,8 @@ def verify():
         return jsonify({
             'success': True, 
             'message': 'Đăng ký thành công',
-            'account_link': account_link
+            'account_link': account_link,
+            'account_name': account_name
         })
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
@@ -150,6 +160,7 @@ def login():
                     'email': user['email'],
                     'role': user['role'],
                     'account_link': user.get('account_link', ''),
+                    'account_name': user.get('account_name', ''),
                     'avatar': user.get('avatar', '')
                 }
             })
@@ -241,6 +252,7 @@ def get_user(account_link):
                 'email': user['email'],
                 'role': user['role'],
                 'account_link': user['account_link'],
+                'account_name': user.get('account_name', ''),
                 'avatar': user['avatar'],
                 'phone': user.get('phone', ''),
                 'address': user.get('address', ''),
@@ -286,14 +298,12 @@ def update_user(account_link):
         
         if 'fullname' in data:
             new_fullname = data['fullname'].strip()
-            current_fullname = user.get('fullname', '')
-            if new_fullname != current_fullname:
+            if new_fullname != user.get('fullname', ''):
                 update_data['fullname'] = new_fullname
         
         if 'phone' in data:
             new_phone = data['phone'].strip()
-            current_phone = user.get('phone', '')
-            if new_phone != current_phone:
+            if new_phone != user.get('phone', ''):
                 if new_phone and (not new_phone.isdigit() or len(new_phone) != 10):
                     return jsonify({
                         'success': False,
@@ -303,8 +313,7 @@ def update_user(account_link):
         
         if 'address' in data:
             new_address = data['address'].strip()
-            current_address = user.get('address', '')
-            if new_address != current_address:
+            if new_address != user.get('address', ''):
                 update_data['address'] = new_address
 
         if not update_data:
@@ -321,8 +330,6 @@ def update_user(account_link):
         )
 
         if result.modified_count > 0:
-            updated_user = db.User.find_one({'account_link': account_link})
-            
             return jsonify({
                 'success': True,
                 'message': 'Cập nhật thông tin thành công'
@@ -336,8 +343,7 @@ def update_user(account_link):
     except Exception as e:
         return jsonify({
             'success': False,
-            'message': 'Có lỗi xảy ra khi cập nhật thông tin',
-            'error': str(e)
+            'message': str(e)
         }), 500
 
 @app.route('/user/update-avatar/<account_link>', methods=['POST'])
@@ -446,6 +452,274 @@ def check_user_role(account_link):
             'message': 'User not found'
         }), 404
     except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
+@app.route('/user/change-password/<account_link>', methods=['POST'])
+def change_password(account_link):
+    try:
+        data = request.get_json()
+        current_password = data.get('currentPassword')
+        new_password = data.get('newPassword')
+        
+        # Tìm user
+        user = db.User.find_one({'account_link': account_link})
+        if not user:
+            return jsonify({
+                'success': False,
+                'message': 'Không tìm thấy người dùng'
+            }), 404
+
+        # Kiểm tra mật khẩu hiện tại
+        if not bcrypt.checkpw(current_password.encode('utf-8'), user['password']):
+            return jsonify({
+                'success': False,
+                'message': 'Mật khẩu hiện tại không chính xác'
+            }), 400
+
+        # Mã hóa và cập nhật mật khẩu mới
+        hashed_password = bcrypt.hashpw(new_password.encode('utf-8'), bcrypt.gensalt())
+        result = db.User.update_one(
+            {'account_link': account_link},
+            {'$set': {
+                'password': hashed_password,
+                'updatedAt': datetime.now()
+            }}
+        )
+
+        if result.modified_count > 0:
+            return jsonify({
+                'success': True,
+                'message': 'Đổi mật khẩu thành công'
+            })
+        
+        return jsonify({
+            'success': False,
+            'message': 'Không thể cập nhật mật khẩu'
+        }), 400
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
+@app.route('/user/addresses/<account_link>', methods=['GET'])
+def get_user_addresses(account_link):
+    try:
+        user = db.User.find_one({'account_link': account_link})
+        if not user:
+            return jsonify({
+                'success': False,
+                'message': 'Không tìm thấy người dùng'
+            }), 404
+
+        addresses = []
+        
+        # Thêm địa chỉ từ trường address (string) nếu có
+        if 'address' in user and user['address']:
+            addresses.append({
+                'id': str(ObjectId()),
+                'fullAddress': user['address'],
+                'isDefault': True,
+                'label': 'home'  # Mặc định là nhà riêng cho địa chỉ cũ
+            })
+
+        # Thêm địa chỉ từ trường addresses (array)
+        if 'addresses' in user and isinstance(user['addresses'], list):
+            addresses.extend(user['addresses'])
+
+        print("Debug - All addresses:", addresses)
+        return jsonify({
+            'success': True,
+            'addresses': addresses
+        })
+
+    except Exception as e:
+        print("Error in get_user_addresses:", str(e))
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
+@app.route('/user/address/<account_link>', methods=['POST'])
+def add_user_address(account_link):
+    try:
+        data = request.get_json()
+        user = db.User.find_one({'account_link': account_link})
+        
+        if not user:
+            return jsonify({
+                'success': False,
+                'message': 'Không tìm thấy người dùng'
+            }), 404
+
+        new_address = {
+            'id': str(ObjectId()),
+            'province': data['province'],
+            'district': data['district'],
+            'ward': data['ward'],
+            'specific': data['specific'],
+            'note': data.get('note', ''),
+            'label': data.get('label', 'other'),
+            'isDefault': data.get('isDefault', False)
+        }
+
+        # Nếu đây là địa chỉ mặc định
+        if new_address['isDefault']:
+            # Bỏ mặc định của địa chỉ cũ trong addresses array
+            if 'addresses' in user:
+                db.User.update_one(
+                    {'account_link': account_link},
+                    {'$set': {'addresses.$[].isDefault': False}}
+                )
+            # Bỏ mặc định của địa chỉ string cũ
+            if 'address' in user:
+                db.User.update_one(
+                    {'account_link': account_link},
+                    {'$unset': {'address': ''}}
+                )
+
+        # Thêm địa chỉ mới
+        db.User.update_one(
+            {'account_link': account_link},
+            {'$push': {'addresses': new_address}}
+        )
+
+        return jsonify({
+            'success': True,
+            'message': 'Thêm địa chỉ thành công',
+            'address': new_address
+        })
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
+@app.route('/user/address/<account_link>/<address_id>', methods=['DELETE'])
+def delete_user_address(account_link, address_id):
+    try:
+        # Kiểm tra xem địa chỉ có phải mặc định không
+        user = db.User.find_one({
+            'account_link': account_link,
+            'addresses': {'$elemMatch': {'id': address_id, 'isDefault': True}}
+        })
+
+        # Xóa địa chỉ
+        result = db.User.update_one(
+            {'account_link': account_link},
+            {'$pull': {'addresses': {'id': address_id}}}
+        )
+
+        if result.modified_count > 0:
+            # Nếu xóa địa chỉ mặc định, đặt địa chỉ đầu tiên còn lại làm mặc định
+            if user:
+                remaining_address = db.User.find_one(
+                    {'account_link': account_link},
+                    {'addresses': {'$slice': 1}}
+                )
+                if remaining_address and 'addresses' in remaining_address and remaining_address['addresses']:
+                    db.User.update_one(
+                        {
+                            'account_link': account_link,
+                            'addresses.id': remaining_address['addresses'][0]['id']
+                        },
+                        {'$set': {'addresses.$.isDefault': True}}
+                    )
+
+            return jsonify({
+                'success': True,
+                'message': 'Xóa địa chỉ thành công'
+            })
+        
+        return jsonify({
+            'success': False,
+            'message': 'Không tìm thấy địa chỉ'
+        }), 404
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
+
+@app.route('/user/address/<account_link>/<address_id>/default', methods=['POST'])
+def set_default_address(account_link, address_id):
+    try:
+        print(f"Setting default address: {address_id} for account: {account_link}")
+        
+        # Lấy thông tin người dùng
+        user = db.User.find_one({'account_link': account_link})
+        if not user:
+            return jsonify({
+                'success': False,
+                'message': 'Không tìm thấy người dùng'
+            }), 404
+
+        # Tìm địa chỉ được chọn trong mảng addresses
+        selected_address = None
+        if 'addresses' in user:
+            for addr in user['addresses']:
+                if addr.get('id') == address_id:
+                    selected_address = addr
+                    break
+
+        if not selected_address:
+            return jsonify({
+                'success': False,
+                'message': 'Không tìm thấy địa chỉ'
+            }), 404
+
+        # Cập nhật tất cả địa chỉ trong mảng thành không mặc định
+        db.User.update_one(
+            {'account_link': account_link},
+            {'$set': {'addresses.$[].isDefault': False}}
+        )
+
+        # Đặt địa chỉ được chọn thành mặc định
+        result = db.User.update_one(
+            {
+                'account_link': account_link,
+                'addresses.id': address_id
+            },
+            {'$set': {'addresses.$.isDefault': True}}
+        )
+
+        # Chuyển địa chỉ cũ (nếu có) vào mảng addresses
+        if 'address' in user and user['address']:
+            old_address = {
+                'id': str(ObjectId()),
+                'fullAddress': user['address'],
+                'isDefault': False,
+                'label': 'home'
+            }
+            db.User.update_one(
+                {'account_link': account_link},
+                {
+                    '$push': {'addresses': old_address},
+                    '$unset': {'address': ''}
+                }
+            )
+
+        print(f"Update result: {result.modified_count}")
+
+        if result.modified_count > 0:
+            return jsonify({
+                'success': True,
+                'message': 'Đã đặt làm địa chỉ mặc định'
+            })
+
+        return jsonify({
+            'success': False,
+            'message': 'Không thể đặt làm địa chỉ mặc định'
+        }), 500
+
+    except Exception as e:
+        print(f"Error setting default address: {str(e)}")
         return jsonify({
             'success': False,
             'message': str(e)

@@ -1,0 +1,83 @@
+<div id="paymentModal" class="payment-modal">
+    <div class="payment-content">
+        <div class="payment-header">
+            <h3><i class="fas fa-credit-card"></i> Chọn Phương Thức Thanh Toán</h3>
+            <span class="close-payment">&times;</span>
+        </div>
+        
+        <div class="payment-methods">
+            <!-- Thẻ Credit/Debit -->
+            <div class="payment-section">
+                <h4>Thẻ Quốc Tế</h4>
+                <div class="payment-options card-options">
+                    <div class="payment-option" data-method="visa">
+                        <img src="/assets/images/payments/visa.png" alt="Visa">
+                        <span>Visa</span>
+                    </div>
+                    <div class="payment-option" data-method="mastercard">
+                        <img src="/assets/images/payments/mastercard.png" alt="Mastercard">
+                        <span>Mastercard</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ngân hàng nội địa -->
+            <div class="payment-section">
+                <h4>Ngân Hàng Nội Địa</h4>
+                <div class="payment-options bank-options">
+                    <div class="payment-option" data-method="vcb">
+                        <img src="/assets/images/payments/vietcombank.png" alt="Vietcombank">
+                        <span>Vietcombank</span>
+                    </div>
+                    <div class="payment-option" data-method="tcb">
+                        <img src="/assets/images/payments/techcombank.png" alt="Techcombank">
+                        <span>Techcombank</span>
+                    </div>
+                    <div class="payment-option" data-method="mb">
+                        <img src="/assets/images/payments/mbbank.png" alt="MB Bank">
+                        <span>MB Bank</span>
+                    </div>
+                    <div class="payment-option" data-method="acb">
+                        <img src="/assets/images/payments/acb.png" alt="ACB">
+                        <span>ACB</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ví điện tử -->
+            <div class="payment-section">
+                <h4>Ví Điện Tử</h4>
+                <div class="payment-options wallet-options">
+                    <div class="payment-option" data-method="momo">
+                        <img src="/assets/images/payments/momo.png" alt="Momo">
+                        <span>Momo</span>
+                    </div>
+                    <div class="payment-option" data-method="vnpay">
+                        <img src="/assets/images/payments/vnpay.png" alt="VNPay">
+                        <span>VNPay</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="payment-summary">
+            <div class="summary-item">
+                <span>Tổng tiền hàng:</span>
+                <span class="total-amount">2,999,000 ₫</span>
+            </div>
+            <div class="summary-item">
+                <span>Phí giao dịch:</span>
+                <span class="transaction-fee">Miễn phí</span>
+            </div>
+            <div class="summary-item total">
+                <span>Tổng thanh toán:</span>
+                <span class="final-amount">2,999,000 ₫</span>
+            </div>
+        </div>
+
+        <button class="proceed-payment">
+            <i class="fas fa-lock"></i>
+            Tiến Hành Thanh Toán
+        </button>
+    </div>
+</div>

@@ -1,0 +1,195 @@
+.payment-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.payment-content {
+    position: relative;
+    background-color: var(--bg-color, #fff);
+    width: 90%;
+    max-width: 600px;
+    margin: 50px auto;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    animation: slideUp 0.3s ease-out;
+}
+
+.payment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border-color, #eee);
+}
+
+.payment-header h3 {
+    color: var(--text-color, #333);
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.close-payment {
+    cursor: pointer;
+    font-size: 1.5rem;
+    color: var(--text-secondary, #666);
+    transition: color 0.3s;
+}
+
+.close-payment:hover {
+    color: var(--danger-color, #ff4757);
+}
+
+.payment-section {
+    margin-bottom: 25px;
+}
+
+.payment-section h4 {
+    color: var(--text-color, #333);
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.payment-options {
+    display: grid;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.card-options, .wallet-options {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+.bank-options {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+}
+
+.payment-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border: 2px solid var(--border-color, #eee);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.payment-option:hover {
+    border-color: var(--primary-color, #4361ee);
+    transform: translateY(-2px);
+}
+
+.payment-option.selected {
+    border-color: var(--primary-color, #4361ee);
+    background-color: rgba(67, 97, 238, 0.05);
+}
+
+.payment-option img {
+    height: 40px;
+    width: auto;
+    margin-bottom: 8px;
+    object-fit: contain;
+}
+
+.payment-option span {
+    font-size: 0.9rem;
+    color: var(--text-color, #333);
+}
+
+.payment-summary {
+    background-color: var(--bg-secondary, #f8f9fa);
+    padding: 20px;
+    border-radius: 12px;
+    margin-top: 20px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    color: var(--text-color, #333);
+}
+
+.summary-item.total {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 2px solid var(--border-color, #eee);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.proceed-payment {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+    background-color: var(--primary-color, #4361ee);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    transition: background-color 0.3s;
+}
+
+.proceed-payment:hover {
+    background-color: var(--primary-dark, #3151ee);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .payment-content {
+        --bg-color: #1a1a1a;
+        --bg-secondary: #2d2d2d;
+        --text-color: #fff;
+        --text-secondary: #aaa;
+        --border-color: #333;
+    }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .payment-content {
+        width: 95%;
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    .payment-option {
+        padding: 10px;
+    }
+
+    .payment-option img {
+        height: 30px;
+    }
+}
