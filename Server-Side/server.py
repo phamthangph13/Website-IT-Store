@@ -245,7 +245,7 @@ def get_user(account_link):
     try:
         user = db.User.find_one({'account_link': account_link})
         
-        if user:
+        if user: 
             user_data = {
                 '_id': str(user['_id']),
                 'fullname': user['fullname'],
