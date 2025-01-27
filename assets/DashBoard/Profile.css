@@ -806,3 +806,216 @@
     line-height: 1.5;
     margin: 0;
 }
+
+/* Enhanced Cancel Button Style */
+.btn-cancel-form {
+    padding: 12px 24px;
+    background: linear-gradient(
+        145deg,
+        rgba(239, 71, 111, 0.1),
+        rgba(220, 53, 69, 0.05)
+    );
+    border: 2px solid #ef476f;
+    border-radius: 12px;
+    color: #ef476f;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-cancel-form::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent,
+        rgba(239, 71, 111, 0.2),
+        transparent
+    );
+    transition: 0.5s;
+}
+
+.btn-cancel-form:hover {
+    background: #ef476f;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(239, 71, 111, 0.3);
+}
+
+.btn-cancel-form:hover::before {
+    left: 100%;
+}
+
+.btn-cancel-form:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 8px rgba(239, 71, 111, 0.2);
+}
+
+/* Form Actions Container */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.form-actions button {
+    flex: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-cancel-form {
+        order: 2; /* Đặt nút hủy xuống dưới */
+    }
+}
+
+/* Enhanced Default Checkbox Style */
+.checkbox-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+    padding: 15px;
+    background: linear-gradient(145deg, 
+        rgba(67, 97, 238, 0.05), 
+        rgba(63, 55, 201, 0.02)
+    );
+    border-radius: 12px;
+    border: 1px solid rgba(67, 97, 238, 0.1);
+    transition: all 0.3s ease;
+}
+
+.checkbox-group:hover {
+    background: linear-gradient(145deg, 
+        rgba(67, 97, 238, 0.08), 
+        rgba(63, 55, 201, 0.04)
+    );
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(67, 97, 238, 0.1);
+}
+
+.checkbox-group input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--primary-color);
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.checkbox-group input[type="checkbox"]:checked {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.checkbox-group input[type="checkbox"]:checked::before {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.checkbox-group input[type="checkbox"]:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(67, 97, 238, 0.2);
+}
+
+.checkbox-group label {
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-group label::before {
+    content: '🏠';
+    font-size: 1.2em;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+/* Hover effect for the entire group */
+.checkbox-group:hover label {
+    color: var(--primary-color);
+}
+
+/* Focus state */
+.checkbox-group input[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+}
+
+/* Active state */
+.checkbox-group input[type="checkbox"]:active {
+    transform: scale(0.95);
+}
+
+/* Disabled state */
+.checkbox-group input[type="checkbox"]:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.checkbox-group input[type="checkbox"]:disabled + label {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* Animation for check mark */
+.checkbox-group input[type="checkbox"]:checked::before {
+    animation: checkmark 0.2s ease-in-out forwards;
+}
+
+@keyframes checkmark {
+    0% {
+        transform: translate(-50%, -50%) scale(0);
+        opacity: 0;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+    .checkbox-group {
+        background: linear-gradient(145deg, 
+            rgba(67, 97, 238, 0.08), 
+            rgba(63, 55, 201, 0.05)
+        );
+    }
+}
