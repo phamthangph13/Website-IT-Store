@@ -341,6 +341,256 @@
           }
         }
       }
+    },
+    "/user/{account_link}": {
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user information",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "account_link",
+            "required": true,
+            "type": "string",
+            "description": "User's account link"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User information retrieved successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": { "type": "string" },
+                "fullname": { "type": "string" },
+                "email": { "type": "string" },
+                "role": { "type": "string" },
+                "account_link": { "type": "string" },
+                "account_name": { "type": "string" },
+                "avatar": { "type": "string" },
+                "phone": { "type": "string" },
+                "address": { "type": "string" },
+                "createdAt": { "type": "string" },
+                "stats": {
+                  "type": "object",
+                  "properties": {
+                    "orders": { "type": "integer" },
+                    "rating": { "type": "number" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/update/{account_link}": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Update user information",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "account_link",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fullname": { "type": "string" },
+                "phone": { "type": "string" },
+                "address": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Update successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": { "type": "boolean" },
+                "message": { "type": "string" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/update-avatar/{account_link}": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Update user avatar",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "account_link",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "avatar": { "type": "string" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Avatar update successful"
+          }
+        }
+      }
+    },
+    "/products": {
+      "get": {
+        "tags": ["Products"],
+        "summary": "Get all products",
+        "responses": {
+          "200": {
+            "description": "List of products",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": { "type": "boolean" },
+                "products": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/services": {
+      "get": {
+        "tags": ["Services"],
+        "summary": "Get all services",
+        "responses": {
+          "200": {
+            "description": "List of services",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": { "type": "boolean" },
+                "services": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/create_payment_link": {
+      "post": {
+        "tags": ["Payment"],
+        "summary": "Create payment link",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": ["amount", "description"],
+              "properties": {
+                "amount": { "type": "number" },
+                "description": { "type": "string" },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "quantity": { "type": "integer" },
+                      "price": { "type": "number" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Payment link created successfully"
+          }
+        }
+      }
+    },
+    "/user/addresses/{account_link}": {
+      "get": {
+        "tags": ["User Addresses"],
+        "summary": "Get user addresses",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "account_link",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of user addresses"
+          }
+        }
+      }
+    },
+    "/user/address/{account_link}": {
+      "post": {
+        "tags": ["User Addresses"],
+        "summary": "Add new address",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "account_link",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "required": ["province", "district", "ward", "specific"],
+              "properties": {
+                "province": { "type": "string" },
+                "district": { "type": "string" },
+                "ward": { "type": "string" },
+                "specific": { "type": "string" },
+                "note": { "type": "string" },
+                "label": { "type": "string" },
+                "isDefault": { "type": "boolean" }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Address added successfully"
+          }
+        }
+      }
     }
   },
   "definitions": {

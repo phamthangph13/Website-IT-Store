@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 from pymongo import MongoClient
 from bson import ObjectId
 import bcrypt
@@ -13,8 +13,10 @@ import jwt
 import os
 import string
 import base64
+import json
+from payos import PayOS, PaymentData, ItemData
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='PUBLIC', static_url_path='', template_folder='PUBLIC')
 CORS(app, resources={
     r"/*": {
         "origins": ["http://127.0.0.1:5500", "http://localhost:5500"],
@@ -28,13 +30,37 @@ db = client['DouneStore']
 
 otp_storage = {}
 
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 587
-SMTP_USERNAME = "dounecompany@gmail.com"
-SMTP_PASSWORD = "zasa vbpy arko snov"
+# Read configuration from Secure.lock
+def read_secure_config():
+    try:
+        with open('Secure.lock', 'r') as f:
+            config = {}
+            for line in f:
+                if line.strip() and not line.startswith('#'):  # Skip empty lines and comments
+                    key, value = line.strip().split(' = ')
+                    config[key] = value.strip('"')
+            return config
+    except Exception as e:
+        print(f"Error reading Secure.lock: {str(e)}")
+        return None
+
+secure_config = read_secure_config()
+
+# SMTP Configuration
+SMTP_SERVER = secure_config['SMTP_SERVER']
+SMTP_PORT = int(secure_config['SMTP_PORT'])
+SMTP_USERNAME = secure_config['SMTP_USERNAME']
+SMTP_PASSWORD = secure_config['SMTP_PASSWORD']
+
+# PayOS configuration
+payOS = PayOS(
+    client_id=secure_config['CLIENT_ID'],
+    api_key=secure_config['API_KEY'],
+    checksum_key=secure_config['CHECKSUM_KEY']
+)
 
 SWAGGER_URL = '/api/docs'
-API_URL = '/static/swagger.json'
+API_URL = '/Swagger'
 
 swaggerui_blueprint = get_swaggerui_blueprint(
     SWAGGER_URL,
@@ -47,6 +73,63 @@ swaggerui_blueprint = get_swaggerui_blueprint(
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 JWT_SECRET = os.environ.get('JWT_SECRET', 'your-secret-key')
+
+@app.route('/Swagger')
+def serve_swagger_spec():
+    try:
+        with open('Server-Side/Static/Swagger.json', 'r', encoding='utf-8') as f:
+            return jsonify(json.load(f))
+    except FileNotFoundError:
+        return jsonify({'error': 'Swagger file not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/')
+def index():
+    return app.send_static_file('checkout.html')
+
+@app.route('/create_payment_link', methods=['POST'])
+def create_payment():
+    domain = request.host_url.rstrip('/')
+    try:
+        data = request.get_json()
+        
+        if not data or 'amount' not in data or 'description' not in data:
+            return jsonify({
+                "error": "Missing required fields",
+                "message": "Amount và description là bắt buộc"
+            }), 400
+            
+        order_code = int(datetime.now().strftime('%y%m%d%H%M%S') + str(random.randint(100, 999)))
+        
+        items_data = []
+        if 'items' in data:
+            for item in data['items']:
+                items_data.append(ItemData(
+                    name=item['name'],
+                    quantity=item['quantity'],
+                    price=item['price']
+                ))
+        
+        paymentData = PaymentData(
+            orderCode=order_code,
+            amount=data['amount'],
+            description=data['description'],
+            cancelUrl=f"{domain}/cancel.html",
+            returnUrl=f"{domain}/success.html",
+            signature="",
+            items=items_data
+        )
+        
+        payosCreatePayment = payOS.createPaymentLink(paymentData)
+        print("PayOS Response:", payosCreatePayment.to_json())
+        return jsonify(payosCreatePayment.to_json())
+    except Exception as e:
+        print("Error:", str(e))
+        return jsonify({
+            "error": str(e),
+            "message": "Không thể tạo link thanh toán"
+        }), 403
 
 def send_otp_email(email, otp):
     msg = MIMEMultipart()
